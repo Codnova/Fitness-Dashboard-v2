@@ -41,9 +41,9 @@ class Persona {
 
   calcularCalorias () { // este método retorna el TDEE o gasto energético diario
       if (this.sexo === "F") {
-        return (447.593 + (9.247 * this.peso) + (3.098 * (this.altura*100)) - (4.330 * this.edad));
+        return ((447.593 + (9.247 * this.peso) + (3.098 * (this.altura*100)) - (4.330 * this.edad))* 1.25);
       } else {
-        return (88.362 + (13.397 * this.peso) + (4.799 * (this.altura*100)) - (5.677 * this.edad));
+        return ((88.362 + (13.397 * this.peso) + (4.799 * (this.altura*100)) - (5.677 * this.edad))* 1.25);
       }
   }
   
