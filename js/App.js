@@ -48,7 +48,7 @@ class Persona {
   }
   
   getDatos() {
-      console.log("------------ Datos de la persona -------------");
+      console.log("----------- Datos de la persona -------------");
       console.log("Nombre: ", this.nombre);
       console.log("Edad: ", this.edad);
       console.log("Altura: ", this.altura);
@@ -161,15 +161,17 @@ let opcion = prompt(
   "Pulse un numero para realizar una acción: \n 1: Agregar mas personas \n 2: Ver personas en alto riesgo por su BMI \n 3: Salir "
 );
 
-while (opcion !== "3") {
+while (opcion !== "3") { // Segundo bucle con los metodos de filtrado sobre el arreglo
   if (opcion === "1") {
     agregarPersona();
   } else if (opcion === "2") {
     let resultadoBusqueda = personaArray.filter(filtrarBMI);
     if (resultadoBusqueda.length == 0) { //Si el array está vacío (no hay personas en riesgo alto)
+      console.log ("------------ Método Filter ------------");
       console.log ("No se encontraron personas");
     } else {
-      console.log("Las personas con el BMI en situación critica son: ");
+      console.log ("------------ Método Filter ------------");
+      console.log("Las personas con su BMI en situación critica son: ");
       resultadoBusqueda.forEach(personaNueva => personaNueva.getNombre()); 
     }
   } else if (opcion === "3") {
