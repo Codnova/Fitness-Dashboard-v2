@@ -1,11 +1,7 @@
 /* 
-Fitness dashboard. Este programa es un dashboard que permite al usuario hacer seguimiento de su rutina de ejercicio y medidas antropométricas.
+Fitness Dashboard es un sitio web con varias herramientas y calculadoras para tus entrenamientos y salud en general. La version inicial te permite calcular tu indice de masa corporal (BMI) y tu TDEE (gasto calórico diario total). 
 
-La app recolectará información del usuario para construir un perfil del mismo. Se solicitará peso, altura, edad, de esta forma determinaremos el índice de masa corporal y su TDEE (gasto energético diario). También solicitaremos el ancho de su cintura en centímetros para saber si el usuario excede los limites recomendados según la OMS.
-
-El programa también permitirá hacer seguimiento del progreso del usuario en los ejercicios básicos de entrenamiento de fuerza (sentadilla, press de banca y peso muerto).
-La app permitirá registrar ejercicios por su nombre, la rutina a realizar, y los sets completados de dicho ejercicio, incluyendo las repeticiones y kilos realizados. 
-
+TODO: Calculadora RPE, Registro de entrenamientos
 */
 
 class Persona {
@@ -19,15 +15,14 @@ class Persona {
       this.bmi = 0;
       this.tdee = 0;
       this.riesgo = "";
-      this.ejercicios = []; //Array de objetos ejercicio que almacena los entrenamientos del usuario
-      
+      this.ejercicios = []; // Array de objetos ejercicio que almacena los entrenamientos del usuario (NO ESTA IMPLEMENTADO AÚN) 
   }
 
-  masaCorporal () { //este método retorna el indice de masa corporal
+  masaCorporal () { // Este método retorna el indice de masa corporal
       return (this.peso / (this.altura * this.altura)); 
   }
 
-  riesgoBMI () { //este método retorna un string con la categoría del indice de masa corporal
+  riesgoBMI () { // Este método retorna un string con la categoría de riesgo del indice de masa corporal
       if (this.bmi <= 18.4) {
         return "Bajo peso";
       } else if (this.bmi >= 18.5 && this.bmi <= 24.9) {
@@ -39,7 +34,7 @@ class Persona {
       }
   }
 
-  calcularCalorias () { // este método retorna el TDEE o gasto energético diario
+  calcularCalorias () { // Este método retorna el TDEE o gasto energético diario total
       if (this.sexo === "F") {
         return ((447.593 + (9.247 * this.peso) + (3.098 * (this.altura*100)) - (4.330 * this.edad))* 1.25);
       } else {
@@ -59,17 +54,13 @@ class Persona {
       console.log("Su gasto energético total diario (TDEE): ", this.tdee);
   }
 
-  getNombre() { //Método que devuelve sólo el nombre de la persona
+  getNombre() { // Método que devuelve sólo el nombre de la persona
     console.log(this.nombre);
-}
+  }
   
 }
 
-class Entrenamiento {
-
-}
-
-function pedirDatos () { //Funcion que solicita y valida los datos que ingresa el usuario
+function pedirDatos () { // Funcion que solicita y valida los datos que ingresa el usuario
   let nombre = prompt("Ingrese su nombre completo");
   let edad;
   while (true) { // Bucle de validación de edad
@@ -106,13 +97,13 @@ function pedirDatos () { //Funcion que solicita y valida los datos que ingresa e
     sexo = prompt("Ingrese M si su sexo es masculino o F si es femenino");
     sexo = sexo.toUpperCase();
     if (sexo === "M" || sexo === "F") {
-      // Sexo en el rango correcto
+      // Sexo en el rango permitido
       break;
     } else {
       alert("Por favor ingrese nuevamente su sexo");
     }
   }
-  return {
+  return { // Retorna un objeto con los valores ingresados por el usuario
     nombre: nombre,
     edad: edad,
     altura: altura,
@@ -121,7 +112,7 @@ function pedirDatos () { //Funcion que solicita y valida los datos que ingresa e
   };
 }
 
-function agregarPersona() { //Funcion que pide los datos y los agrega al array de personas
+function agregarPersona() { // Funcion que pide los datos y los agrega al array de personas
   let datosPersona = pedirDatos(); 
   let personaNueva = new Persona (datosPersona.nombre, datosPersona.edad, datosPersona.altura, datosPersona.peso, datosPersona.sexo);
   calcularPersona(personaNueva);
@@ -129,16 +120,28 @@ function agregarPersona() { //Funcion que pide los datos y los agrega al array d
   personaNueva.getDatos();
 }
 
-function calcularPersona (personaNueva) { //Esta funcion recibe los datos ingresados por el usuario para calcular la info requerida
+function calcularPersona (personaNueva) { // Esta funcion recibe los datos ingresados por el usuario para calcular la info requerida
   personaNueva.bmi = personaNueva.masaCorporal();
   personaNueva.riesgo = personaNueva.riesgoBMI();
   personaNueva.tdee = personaNueva.calcularCalorias();
 }
 
-function filtrarBMI (objPersona) { //Funcion de búsqueda de personas en riesgo por su categoria BMI
+function filtrarBMI (objPersona) { // Funcion de búsqueda de personas en riesgo por su categoria BMI
   
   return objPersona.riesgo === "Bajo peso" || objPersona.riesgo === "Obesidad";
   
+}
+
+function filtrarPorRiesgo (objPersona, categoriaRiesgo) {
+  if (categoriaRiesgo === 1) {
+    return objPersona.riesgo === "Bajo peso";
+  } else if (categoriaRiesgo === 2) {
+    return objPersona.riesgo === "Peso normal";
+  } else if (categoriaRiesgo === 3) {
+    return objPersona.riesgo === "Sobre peso";
+  } else if (categoriaRiesgo === 4) {
+    return objPersona.riesgo === "Obesidad";
+  }
 }
 
 /* TODO 
@@ -158,15 +161,15 @@ do {
 } while (ciclo != "Salir");
 
 let opcion = prompt(
-  "Pulse un numero para realizar una acción: \n 1: Agregar mas personas \n 2: Ver personas en alto riesgo por su BMI \n 3: Salir "
+  "Pulse un numero para realizar una acción: \n 1: Agregar mas personas \n 2: Ver personas en alto riesgo por su BMI \n 3: Filtrar personas con un BMI \n 4: Salir"
 );
 
-while (opcion !== "3") { // Segundo bucle con los metodos de filtrado sobre el arreglo
+while (opcion !== "4") { // Segundo bucle con los metodos de filtrado sobre el arreglo
   if (opcion === "1") {
     agregarPersona();
   } else if (opcion === "2") {
-    let resultadoBusqueda = personaArray.filter(filtrarBMI);
-    if (resultadoBusqueda.length == 0) { //Si el array está vacío (no hay personas en riesgo alto)
+    let resultadoBusqueda = personaArray.filter(filtrarBMI); // Funcion filter que devuelve las personas con alto riesgo por su categoría BMI
+    if (resultadoBusqueda.length == 0) { // Si el array está vacio, le informamos al usuario que la busqueda retornó vacia
       console.log ("------------ Método Filter ------------");
       console.log ("No se encontraron personas");
     } else {
@@ -174,11 +177,24 @@ while (opcion !== "3") { // Segundo bucle con los metodos de filtrado sobre el a
       console.log("Las personas con su BMI en situación critica son: ");
       resultadoBusqueda.forEach(personaNueva => personaNueva.getNombre()); 
     }
-  } else if (opcion === "3") {
-    opcion = "3";
+  } else if (opcion === "3"){
+    let categoriaRiesgo = parseInt(prompt("Ingrese la categoria de BMI por la cual quiere filtrar a las personas registradas 1: Bajo Peso, 2: Peso Normal, 3: Sobre Peso, 4: Obesidad"));
+    let resultadoBusqueda2 = personaArray.filter(function(objPersona) { // Funcion filter que devuelve las personas con la categoría de BMI especificada por el usuario
+      return filtrarPorRiesgo(objPersona, categoriaRiesgo);
+    });
+    if (resultadoBusqueda2.length == 0) { 
+      console.log ("------------ Método Filter Por Categoria ------------");
+      console.log ("No se encontraron personas");
+    } else {
+      console.log ("------------ Método Filter Por Categoria ------------");
+      console.log("Las personas con el BMI solicitado son: ");
+      resultadoBusqueda2.forEach(personaNueva => personaNueva.getNombre()); 
+    }
+  } else if (opcion === "4") {
+    opcion = "4";
   }
   opcion = prompt (
-    "Vuelva a pulsar un número: \n 1: Agregar mas personas \n 2: Ver personas en alto riesgo por su BMI \n 3: Salir "
+    "Pulse un numero para realizar una acción: \n 1: Agregar mas personas \n 2: Ver personas en alto riesgo por su BMI \n 3: Filtrar personas con un BMI \n 4: Salir"
   )
 
 }
