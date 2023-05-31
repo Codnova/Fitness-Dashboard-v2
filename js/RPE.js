@@ -1,4 +1,3 @@
-
 const rpe_chart = {
   1: {
       10: 100,
@@ -133,34 +132,90 @@ const rpe_chart = {
       6: 57.4
   }
 }
-  
-let peso = document.getElementById("Peso"); //captura el nodo/etiqueta peso
+
+let rpeArray = [
+  [100, 97.8, 95.5, 93.9, 92.2, 90.7, 89.2, 87.8, 86.3],
+  [95.5, 93.9, 92.2, 90.7, 89.2, 87.8, 86.3, 85, 83.7],
+  [92.2, 90.7, 89.2, 87.8, 86.3, 85, 83.7, 82.4, 81.1],
+  [89.2, 87.8, 86.3, 85, 83.7, 82.4, 81.1, 79.9, 78.6],
+  [86.3, 85, 83.7, 82.4, 81.1, 79.9, 78.6, 77.4, 76.2],
+  [83.7, 82.4, 81.1, 79.9, 78.6, 77.4, 76.2, 75.1, 73.9],
+  [81.1, 79.9, 78.6, 77.4, 76.2, 75.1, 73.9, 72.3, 70.7],
+  [78.6, 77.4, 76.2, 75.1, 73.9, 72.3, 70.7, 69.4, 68],
+  [76.2, 75.1, 73.9, 72.3, 70.7, 69.4, 68, 66.7, 65.3],
+  [73.9, 72.3, 70.7, 69.4, 68, 66.7, 65.3, 64, 62.6],
+  [70.7, 69.4, 68, 66.7, 65.3, 64, 62.6, 61.3, 59.9],
+  [68, 66.7, 65.3, 64, 62.6, 61.3, 59.9, 58.6, 57.4]
+];
+
+// Funciones:
+
+function generarListado (numeroBoton) { // Funcion que genera el listado de intensidad según el botón que se presionó
+  for (let i=0; i < rpeArray[numeroBoton][i]; i++) {
+    let valorRpe = rpeArray[numeroBoton][i];
+    let nuevoElemento = document.createElement("li");
+    nuevoElemento.textContent = valorRpe + "%";
+    nuevoElemento.classList.add("list-group-item", "bg-body-tertiary");
+    listadoIntensidad.appendChild(nuevoElemento);
+  }
+}
+
+function e1rm(peso, reps, rpe) { // Función que calcula el 1RM segun el peso, repeticiones y RPE ingresado
+  return ((peso / rpe_chart[reps][rpe]) * 100);
+}
+
+// Capturando los nodos/Elementos:
+
+let peso = document.getElementById("Peso"); // Captura el nodo/etiqueta peso
+let reps = document.getElementById("Reps"); // Captura el nodo/etiqueta reps
+let rpe = document.getElementById("RPE"); // Captura el nodo/etiqueta RPE
+let resultadoRpe = document.getElementById("resultadoRpe"); // Captura el nodo/etiqueta con el resultado de e1RM
+let calcular = document.getElementById("btnCalculate"); // Captura el botón Calcular
+let listadoIntensidad = document.getElementById("ul-intensidad"); //Capturo los elementos de la lista de intensidad
+let btnContainer = document.getElementById("btnContainer"); //Capturo todos los botones de repeticiones
+
+// Event Listeners y Handlers:
 
 peso.addEventListener("input", () => {
-  console.log(peso.value);
+  console.log("Peso: " + peso.value);
 });
-
-let reps = document.getElementById("Reps");
 
 reps.addEventListener("input", () => {
-  console.log(reps.value);
+  console.log("Reps: " +  reps.value);
 });
-
-let rpe = document.getElementById("RPE");
 
 rpe.addEventListener("input", () => {
-  console.log(rpe.value);
+  console.log("RPE: " + rpe.value);
 });
 
-let rm = document.getElementById("resultadoRpe");
-let calcular = document.getElementById("btnCalculate");
 
 calcular.addEventListener("click", () => {
-  let oneMaxRep = (peso.value / (rpe_chart[reps.value][rpe.value])) * 100;
-  rm.innerText = Math.round(oneMaxRep);
+  let oneRepMax = e1rm(peso.value, reps.value, rpe.value);
+  resultadoRpe.innerText = Math.round(oneRepMax);
 });
 
+btnContainer.addEventListener("click", (evento) => { //Este evento captura cuando se hace click en algun botón de las repeticiones, y genera el listado de %RM según el botón que se presionó
+  if (evento.target.nodeName !== "BUTTON") { //Si no hago click en un boton
+    console.log("No presionó el boton");
+    return;
+  } else {
+    let botonPresionado = parseInt(evento.target.innerText); //Guardo en esta variable el numero del boton presionado
+    console.log(botonPresionado);
+    listadoIntensidad.innerHTML = "";
+    generarListado(botonPresionado-1);
+    calcularPeso(botonPresionado-1);
+  }
+});
 
+window.addEventListener("load", (event) => { // Se carga la lista de Intensidad al cargar la pagina
+  for (let i=0; i < rpeArray[0][i]; i++) {
+    let valorRpe = rpeArray[0][i];
+    let nuevoElemento = document.createElement("li");
+    nuevoElemento.textContent = valorRpe + "%";
+    nuevoElemento.classList.add("list-group-item", "bg-body-tertiary");
+    listadoIntensidad.appendChild(nuevoElemento);
+  };
+});
 
 
 

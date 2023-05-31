@@ -7,6 +7,7 @@
   <title>Fitness Dashboard - Home</title>
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link rel="stylesheet" href="./stylesheets/style.css">
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
   <meta name="description" content="Fitness Dashboard es tu sitio para calcular tus levantamientos maximos y llevar registro de tus entrenamientos">
@@ -70,6 +71,64 @@
         <div class="mb-3">
           <h2>Tu 1RM Estimado (e1RM)</h2>
           <h4 id= "resultadoRpe">--</h4>
+          <hr>
+        </div>
+        <div class="mb-3 row justify-content-center">
+          <h2>Reps</h2>
+          <div id="btnContainer" class="col-auto mb-3">
+            <button type="button" id="btnReps1" data-reps="1" class="btn btn-primary">1</button>
+            <button type="button" id="btnReps2" data-reps="2" class="btn btn-primary">2</button>
+            <button type="button" id="btnReps3" data-reps="3" class="btn btn-primary">3</button>
+            <button type="button" id="btnReps4" data-reps="4" class="btn btn-primary">4</button>
+            <button type="button" id="btnReps5" data-reps="5" class="btn btn-primary">5</button>
+            <button type="button" id="btnReps6" data-reps="6" class="btn btn-primary">6</button>
+            <button type="button" id="btnReps7" data-reps="7" class="btn btn-primary">7</button>
+            <button type="button" id="btnReps8" data-reps="8" class="btn btn-primary">8</button>
+            <button type="button" id="btnReps9" data-reps="9" class="btn btn-primary">9</button>
+            <button type="button" id="btnReps10" data-reps="10" class="btn btn-primary">10</button>
+            <button type="button" id="btnReps11" data-reps="11" class="btn btn-primary">11</button>
+            <button type="button" id="btnReps12" data-reps="12" class="btn btn-primary">12</button>
+          </div>
+          <hr>
+        </div>
+        <div class="mb-3 mt-3 row justify-content-between">
+          <div class="col-auto"><h3>RPE</h3></div>
+          <div class="col-auto"><h3>Peso</h3></div>
+          <div class="col-auto"><h3>% de 1RM</h3></div>
+          <hr>
+        </div>
+        <div class="mb-3 row justify-content-between">
+          <div class="col-auto">
+            <ul id="ul-rpe" class="list-group list-group-flush fw-bold">
+              <li class="list-group-item bg-body-tertiary">10</li>
+              <li class="list-group-item bg-body-tertiary">9.5</li>
+              <li class="list-group-item bg-body-tertiary">9</li>
+              <li class="list-group-item bg-body-tertiary">8.5</li>
+              <li class="list-group-item bg-body-tertiary">8</li>
+              <li class="list-group-item bg-body-tertiary">7.5</li>
+              <li class="list-group-item bg-body-tertiary">7</li>
+              <li class="list-group-item bg-body-tertiary">6.5</li>
+              <li class="list-group-item bg-body-tertiary">6</li>
+            </ul>
+          </div>
+          <div class="col-auto">
+            <ul id="ul-peso" class="list-group list-group-flush fw-bold">
+              <li class="list-group-item bg-body-tertiary">--</li>
+              <li class="list-group-item bg-body-tertiary">--</li>
+              <li class="list-group-item bg-body-tertiary">--</li>
+              <li class="list-group-item bg-body-tertiary">--</li>
+              <li class="list-group-item bg-body-tertiary">--</li>
+              <li class="list-group-item bg-body-tertiary">--</li>
+              <li class="list-group-item bg-body-tertiary">--</li>
+              <li class="list-group-item bg-body-tertiary">--</li>
+              <li class="list-group-item bg-body-tertiary">--</li>
+            </ul>
+          </div>
+          <div class="col-auto">
+            <ul id="ul-intensidad" class="list-group list-group-flush fw-bold">
+              <!-- Lista de intensidades se generan desde JS -->
+            </ul>
+          </div>
           <hr>
         </div>
       </div>
