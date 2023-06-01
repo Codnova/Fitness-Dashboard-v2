@@ -150,9 +150,9 @@ let rpeArray = [
 
 // Funciones:
 
-function generarListado (numeroBoton) { // Funcion que genera el listado de intensidad según el botón que se presionó
-  for (let i=0; i < rpeArray[numeroBoton][i]; i++) {
-    let valorRpe = rpeArray[numeroBoton][i];
+function generarListado (botonReps) { // Funcion que genera el listado de intensidad según el botón que se presionó
+  for (let i=0; i < rpeArray[botonReps][i]; i++) {
+    let valorRpe = rpeArray[botonReps][i];
     let nuevoElemento = document.createElement("li");
     nuevoElemento.textContent = valorRpe + "%";
     nuevoElemento.classList.add("list-group-item", "bg-body-tertiary");
@@ -164,6 +164,17 @@ function e1rm(peso, reps, rpe) { // Función que calcula el 1RM segun el peso, r
   return ((peso / rpe_chart[reps][rpe]) * 100);
 }
 
+function generarListadoPeso(botonReps, oneRepMax) {
+  for (let i=0; i < rpeArray[botonReps][i]; i++) {
+    let valorRpe = rpeArray[botonReps][i];
+    let resultado = Math.round((oneRepMax * valorRpe / 100)*2)/2;
+    let nuevoElemento = document.createElement("li");
+    nuevoElemento.textContent = resultado;
+    nuevoElemento.classList.add("list-group-item", "bg-body-tertiary");
+    listadoPeso.appendChild(nuevoElemento);
+  }
+}
+
 // Capturando los nodos/Elementos:
 
 let peso = document.getElementById("Peso"); // Captura el nodo/etiqueta peso
@@ -172,6 +183,7 @@ let rpe = document.getElementById("RPE"); // Captura el nodo/etiqueta RPE
 let resultadoRpe = document.getElementById("resultadoRpe"); // Captura el nodo/etiqueta con el resultado de e1RM
 let calcular = document.getElementById("btnCalculate"); // Captura el botón Calcular
 let listadoIntensidad = document.getElementById("ul-intensidad"); //Capturo los elementos de la lista de intensidad
+let listadoPeso = document.getElementById("ul-peso");
 let btnContainer = document.getElementById("btnContainer"); //Capturo todos los botones de repeticiones
 
 // Event Listeners y Handlers:
@@ -188,23 +200,25 @@ rpe.addEventListener("input", () => {
   console.log("RPE: " + rpe.value);
 });
 
-
-calcular.addEventListener("click", () => {
-  let oneRepMax = e1rm(peso.value, reps.value, rpe.value);
-  resultadoRpe.innerText = Math.round(oneRepMax);
-});
-
 btnContainer.addEventListener("click", (evento) => { //Este evento captura cuando se hace click en algun botón de las repeticiones, y genera el listado de %RM según el botón que se presionó
   if (evento.target.nodeName !== "BUTTON") { //Si no hago click en un boton
     console.log("No presionó el boton");
     return;
   } else {
-    let botonPresionado = parseInt(evento.target.innerText); //Guardo en esta variable el numero del boton presionado
-    console.log(botonPresionado);
+    let botonReps = parseInt(evento.target.innerText); //Guardo en esta variable el numero del boton presionado
+    console.log(botonReps);
     listadoIntensidad.innerHTML = "";
-    generarListado(botonPresionado-1);
-    calcularPeso(botonPresionado-1);
+    listadoPeso.innerHTML = "";
+    generarListado(botonReps-1);
+    generarListadoPeso(botonReps-1, e1rm(peso.value, reps.value, rpe.value));
   }
+});
+
+calcular.addEventListener("click", () => {
+  let oneRepMax = e1rm(peso.value, reps.value, rpe.value);
+  resultadoRpe.innerText = Math.round(oneRepMax);
+  listadoPeso.innerHTML = "";
+  generarListadoPeso(0, oneRepMax);
 });
 
 window.addEventListener("load", (event) => { // Se carga la lista de Intensidad al cargar la pagina
