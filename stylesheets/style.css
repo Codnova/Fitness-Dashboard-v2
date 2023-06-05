@@ -1,3 +1,7 @@
 #btnContainer button {
   margin-bottom: 3px !important; 
 }
+
+.card {
+  width: fit-content;
+}
