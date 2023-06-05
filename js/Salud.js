@@ -64,7 +64,7 @@ function mostrarResultado (objPersona) { // Esta funcion agrega el resultado al 
   resultadoSalud.appendChild(nuevoElemento);
 };
 
-function mostrarHistorial (objPersona) {
+function mostrarHistorial (objPersona) { // Esta funcion recibe el objeto persona y genera una Card con los datos de la misma para mostrarlos
   let nuevoElemento = document.createElement("div");
   nuevoElemento.className = "col-auto";
   nuevoElemento.innerHTML = `<div class="card">
