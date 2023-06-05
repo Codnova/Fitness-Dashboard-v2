@@ -1,7 +1,7 @@
 let arrayPersonas = [];
 
 class Persona {
-
+  
   constructor (nombre, edad, altura, peso, sexo) { // Constructor de la clase Persona
     this.nombre = nombre;
     this.edad = edad;
@@ -40,7 +40,6 @@ class Persona {
   logDatos() {
     console.log(this.nombre, this.edad, this.altura, this.peso, this.sexo, this.bmi, this.tdee, this.riesgo);
   }
-
 }
 
 // Funciones:
@@ -62,7 +61,7 @@ function mostrarResultado (objPersona) { // Esta funcion agrega el resultado al 
                               </ul>
                             </div>`;
   resultadoSalud.appendChild(nuevoElemento);
-};
+}
 
 function mostrarHistorial (objPersona) { // Esta funcion recibe el objeto persona y genera una Card con los datos de la misma para mostrarlos
   let nuevoElemento = document.createElement("div");
@@ -81,8 +80,7 @@ function mostrarHistorial (objPersona) { // Esta funcion recibe el objeto person
                               </div>
                             </div>`;
     historialSalud.appendChild(nuevoElemento);
-
-};
+}
 
 function realizarCalculos (personaNueva) { // Esta funcion recibe los datos ingresados por el usuario para calcular la info requerida
   personaNueva.bmi = personaNueva.masaCorporal();
@@ -104,10 +102,7 @@ function agregarPersona (inputNombre, inputEdad, inputAltura, inputPeso, inputSe
   let ArrayJson = JSON.stringify(arrayPersonas);
   localStorage.setItem("personas", ArrayJson);
   console.log("Array en agregarPersona", arrayPersonas);
-  for (let objPersona of arrayPersonas) {
-    mostrarHistorial(objPersona);
-  }; 
-};
+}
 
 // Capturando los nodos del HTML:
 
@@ -138,8 +133,30 @@ window.addEventListener("load", () => { // Este evento carga las personas guarda
   } else {
     arrayPersonas = [];
   }
-  
 });
+
+// Alerta de boostrap cuando el usuario hace click: 
+
+const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+const appendAlert = (message, type) => {
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = [
+    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+    `   <div>${message}</div>`,
+    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+    '</div>'
+  ].join('')
+
+  alertPlaceholder.append(wrapper)
+}
+
+const alertTrigger = document.getElementById('btnCalculateBmi')
+if (alertTrigger) {
+  alertTrigger.addEventListener('click', () => {
+    appendAlert('Datos guardados. Recargue la pagina para ver el historial', 'success')
+  })
+}
+
 
 
 
