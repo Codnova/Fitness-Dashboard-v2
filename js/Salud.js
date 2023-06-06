@@ -38,7 +38,7 @@ class Persona {
   }
 
   logDatos() {
-    console.log(this.nombre, this.edad, this.altura, this.peso, this.sexo, this.bmi, this.tdee, this.riesgo);
+    console.log("Datos de objeto persona:", this.nombre, this.edad, this.altura, this.peso, this.sexo, this.bmi, this.tdee, this.riesgo);
   }
 }
 
@@ -119,7 +119,13 @@ let historialSalud = document.getElementById("contenedor-historial");
 
 inputCalcular.addEventListener ("click", (event) => { // Este evento calcula los datos de la persona y los agrega al arrayPersona
   event.preventDefault();
-  agregarPersona(inputNombre.value, inputEdad.value, inputAltura.value, inputPeso.value, document.querySelector("input[name='Sexo']:checked").value);
+  
+  //crear codigo acá que prevenga la funcion agregar persona ejecutarse si los nodos HTML vienen vacios  
+  if (!inputNombre?.value || !inputEdad?.value || !inputAltura?.value || !inputPeso?.value || !document.querySelector("input[name='Sexo']:checked")?.value) {
+    alert("Por favor introduzca los datos nuevamente!")
+  } else {
+    agregarPersona(inputNombre?.value, inputEdad?.value, inputAltura?.value, inputPeso?.value, document.querySelector("input[name='Sexo']:checked")?.value);
+  }
 });
 
 window.addEventListener("load", () => { // Este evento carga las personas guardas en localstorage, sino hay personas, setea el array como vacio
