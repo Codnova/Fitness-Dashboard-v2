@@ -88,12 +88,7 @@ function realizarCalculos (personaNueva) { // Esta funcion recibe los datos ingr
   personaNueva.tdee = personaNueva.calcularCalorias();
 }
 
-function agregarPersona (inputNombre, inputEdad, inputAltura, inputPeso, inputSexo) { // Esta funcion recibe los datos del usuario y los guarda en un array de objetos, también actualiza el Local Storage
-  let nombre = inputNombre;
-  let edad = parseInt(inputEdad);
-  let altura = parseFloat(inputAltura);
-  let peso = parseFloat(inputPeso);
-  let sexo = inputSexo;
+function agregarPersona (nombre, edad, altura, peso, sexo) { // Esta funcion recibe los datos del usuario y los guarda en un array de objetos, también actualiza el Local Storage
   let personaNueva = new Persona (nombre, edad, altura, peso, sexo);
   realizarCalculos(personaNueva);
   personaNueva.logDatos();
@@ -114,17 +109,25 @@ let inputSexo = document.getElementsByName("Sexo");
 let inputCalcular = document.getElementById("btnCalculateBmi");
 let resultadoSalud = document.getElementById("contenedor-resultado");
 let historialSalud = document.getElementById("contenedor-historial");
+let form = document.getElementById("form");
 
 // Event Listeners/Handlers:
 
-inputCalcular.addEventListener ("click", (event) => { // Este evento calcula los datos de la persona y los agrega al arrayPersona
+form.addEventListener ("submit", (event) => {
   event.preventDefault();
-  
-  //crear codigo acá que prevenga la funcion agregar persona ejecutarse si los nodos HTML vienen vacios  
-  if (!inputNombre?.value || !inputEdad?.value || !inputAltura?.value || !inputPeso?.value || !document.querySelector("input[name='Sexo']:checked")?.value) {
-    alert("Por favor introduzca los datos nuevamente!")
+})
+
+inputCalcular.addEventListener ("click", (event) => { // Este evento calcula los datos de la persona y los agrega al arrayPersona
+  let nombre = inputNombre?.value;
+  let edad = parseInt(inputEdad?.value);
+  let altura = parseFloat(inputAltura?.value);
+  let peso = parseFloat(inputPeso?.value);
+  let sexo = document.querySelector("input[name='Sexo']:checked")?.value;
+  if (inputNombre.checkValidity() && inputEdad.checkValidity() && inputAltura.checkValidity() && inputPeso.checkValidity() === true){
+    agregarPersona(nombre, edad, altura, peso, sexo); // Si los valores del form son validos. Agregamos la persona
+    appendAlert('Datos guardados. Recargue la pagina para ver el historial', 'success'); // Funcion que muestra una alerta cuando se hace click en el botón calcular
   } else {
-    agregarPersona(inputNombre?.value, inputEdad?.value, inputAltura?.value, inputPeso?.value, document.querySelector("input[name='Sexo']:checked")?.value);
+    appendAlert('Por favor revise los datos ingresados y verifique que estén correctos.', 'danger');
   }
 });
 
@@ -155,17 +158,3 @@ const appendAlert = (message, type) => {
 
   alertPlaceholder.append(wrapper)
 }
-
-const alertTrigger = document.getElementById('btnCalculateBmi')
-if (alertTrigger) {
-  alertTrigger.addEventListener('click', () => {
-    appendAlert('Datos guardados. Recargue la pagina para ver el historial', 'success')
-  })
-}
-
-
-
-
-
-
-

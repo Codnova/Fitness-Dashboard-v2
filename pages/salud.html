@@ -34,14 +34,14 @@
     <div class="row justify-content-center">
       <div class="col-10">
         <h2>Ingresar datos de la persona</h2>
-        <form action="">
+        <form action="" id="form">
           <div class="mb-3 mt-3">
             <label for="Nombre" class="form-label">Ingrese su nombre</label>
             <input type="text" class="form-control" id="Nombre" placeholder="Maria..." required>
           </div>
           <div class="mb-3">
             <label for="Edad" class="form-label">Ingrese su edad</label>
-            <input type="number" class="form-control" min="10" max="150" id="Edad" placeholder="30..." required>
+            <input type="number" class="form-control" min="1" max="150" id="Edad" placeholder="30..." required>
           </div>
           <div class="mb-3">
             <label for="Altura" class="form-label">Ingrese su altura (solo números, en metros)</label>
@@ -55,7 +55,7 @@
             <label class="form-label">Seleccione su Sexo</label>
             <div class="col-auto">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="Sexo" id="Mujer" value="Mujer">
+                <input class="form-check-input" type="radio" name="Sexo" id="Mujer" value="Mujer" required checked>
                 <label class="form-check-label" for="Mujer">
                   Mujer
                 </label>
@@ -63,7 +63,7 @@
             </div>
             <div class="col-auto">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="Sexo" id="Hombre" value="Hombre">
+                <input class="form-check-input" type="radio" name="Sexo" id="Hombre" value="Hombre" required>
                 <label class="form-check-label" for="Hombre">
                   Hombre
                 </label>
@@ -79,20 +79,16 @@
         </form>
         <div class="mb-3">
           <h2>Resultados</h2>
-          <div id="contenedor-resultado"> <!-- En este contenedor aparecerán los resultados de la calcualdora -->
-            
-            
-
+          <div id="contenedor-resultado" class="mt-3"> 
+            <!-- En este contenedor aparecerán los resultados de la calcualdora -->
           </div>
           <hr>
         </div>
         <div class="mb-3">
           <h2>Historial de Personas</h2>
           <div class="container">
-            <div id="contenedor-historial" class="row justify-content-start gy-2"> <!-- En este contenedor aparecerán el historial de usarios -->
-
-               
-
+            <div id="contenedor-historial" class="row gy-2 mt-3"> 
+              <!-- En este contenedor aparecerán el historial de usarios -->
             </div>
           </div>
           <hr>
