@@ -64,6 +64,7 @@ function mostrarResultado (objPersona) { // Esta funcion agrega el resultado al 
 }
 
 function mostrarHistorial (objPersona) { // Esta funcion recibe el objeto persona y genera una Card con los datos de la misma para mostrarlos
+  
   let nuevoElemento = document.createElement("div");
   nuevoElemento.className = "col-auto";
   nuevoElemento.innerHTML = `<div class="card">
@@ -99,6 +100,19 @@ function agregarPersona (nombre, edad, altura, peso, sexo) { // Esta funcion rec
   console.log("Array en agregarPersona", arrayPersonas);
 }
 
+function cargarHistorial() { // Esta funcion carga el array guardado en LocalStorage y lo muestra
+  historialSalud.innerHTML = "";
+  let ArrayJson = localStorage.getItem("personas"); 
+  arrayPersonas = JSON.parse(ArrayJson);
+  if (arrayPersonas !== null) {
+    for (let objPersona of arrayPersonas) {
+      mostrarHistorial(objPersona);
+    }; 
+  } else {
+    arrayPersonas = [];
+  }
+}
+
 // Capturando los nodos del HTML:
 
 let inputNombre = document.getElementById("Nombre");
@@ -126,22 +140,14 @@ inputCalcular.addEventListener ("click", (event) => { // Este evento calcula los
   if (inputNombre.checkValidity() && inputEdad.checkValidity() && inputAltura.checkValidity() && inputPeso.checkValidity() === true){
     agregarPersona(nombre, edad, altura, peso, sexo); // Si los valores del form son validos. Agregamos la persona
     appendAlert('Datos guardados. Recargue la pagina para ver el historial', 'success'); // Funcion que muestra una alerta cuando se hace click en el botón calcular
+    cargarHistorial(); // Muesto las personas en el historial, incluyendo la persona recién agregada
   } else {
     appendAlert('Por favor revise los datos ingresados y verifique que estén correctos.', 'danger');
   }
 });
 
 window.addEventListener("load", () => { // Este evento carga las personas guardas en localstorage, sino hay personas, setea el array como vacio
-  let ArrayJson = localStorage.getItem("personas");
-  arrayPersonas = JSON.parse(ArrayJson);
-  console.log("Array en page load", arrayPersonas);
-  if (arrayPersonas !== null) {
-    for (let objPersona of arrayPersonas) {
-      mostrarHistorial(objPersona);
-    }; 
-  } else {
-    arrayPersonas = [];
-  }
+  cargarHistorial();
 });
 
 // Alerta de boostrap cuando el usuario hace click: 
