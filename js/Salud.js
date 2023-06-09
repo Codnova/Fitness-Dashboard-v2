@@ -154,6 +154,7 @@ window.addEventListener("load", () => { // Este evento carga las personas guarda
 
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 const appendAlert = (message, type) => {
+  alertPlaceholder.innerHTML = "";
   const wrapper = document.createElement('div')
   wrapper.innerHTML = [
     `<div class="alert alert-${type} alert-dismissible" role="alert">`,
