@@ -100,7 +100,7 @@ function agregarPersona (nombre, edad, altura, peso, sexo) { // Esta funcion rec
   console.log("Array en agregarPersona", arrayPersonas);
 }
 
-function cargarHistorial() { // Esta funcion carga el array guardado en LocalStorage y lo muestra
+function cargarHistorial() { // Esta funcion carga el array guardado en LocalStorage, sino hay personas, setea el array como vacio
   historialSalud.innerHTML = "";
   let ArrayJson = localStorage.getItem("personas"); 
   arrayPersonas = JSON.parse(ArrayJson);
@@ -124,6 +124,8 @@ let inputCalcular = document.getElementById("btnCalculateBmi");
 let resultadoSalud = document.getElementById("contenedor-resultado");
 let historialSalud = document.getElementById("contenedor-historial");
 let form = document.getElementById("form");
+let botonClose = document.getElementById("btn-close");
+
 
 // Event Listeners/Handlers:
 
@@ -139,14 +141,14 @@ inputCalcular.addEventListener ("click", (event) => { // Este evento calcula los
   let sexo = document.querySelector("input[name='Sexo']:checked")?.value;
   if (inputNombre.checkValidity() && inputEdad.checkValidity() && inputAltura.checkValidity() && inputPeso.checkValidity() === true){
     agregarPersona(nombre, edad, altura, peso, sexo); // Si los valores del form son validos. Agregamos la persona
-    appendAlert('Datos guardados. Recargue la pagina para ver el historial', 'success'); // Funcion que muestra una alerta cuando se hace click en el botón calcular
+    appendAlert('Datos guardados exitosamente.', 'success'); // Funcion que muestra una alerta cuando se hace click en el botón calcular
     cargarHistorial(); // Muesto las personas en el historial, incluyendo la persona recién agregada
   } else {
     appendAlert('Por favor revise los datos ingresados y verifique que estén correctos.', 'danger');
-  }
+    }
 });
 
-window.addEventListener("load", () => { // Este evento carga las personas guardas en localstorage, sino hay personas, setea el array como vacio
+window.addEventListener("load", () => { // Este evento carga las personas guardas en localstorage
   cargarHistorial();
 });
 
@@ -157,9 +159,9 @@ const appendAlert = (message, type) => {
   alertPlaceholder.innerHTML = "";
   const wrapper = document.createElement('div')
   wrapper.innerHTML = [
-    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+    `<div class="alert alert-${type} alert-dismissible fade show" role="alert">`,
     `   <div>${message}</div>`,
-    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+    '   <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
     '</div>'
   ].join('')
 
