@@ -67,7 +67,7 @@ function mostrarHistorial (objPersona) { // Esta funcion recibe el objeto person
   
   let nuevoElemento = document.createElement("div");
   nuevoElemento.className = "col-auto";
-  nuevoElemento.innerHTML = `<div class="card">
+  nuevoElemento.innerHTML = `<div class="card" id="cardSalud">
                               <div class="card-body">
                                 <h5 class="card-title">${objPersona.nombre}</h5>
                                 <h6 class="card-subtitle text-body-secondary">${objPersona.sexo}</h6>
