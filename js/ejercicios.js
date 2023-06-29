@@ -67,7 +67,7 @@ const url = 'https://musclewiki.p.rapidapi.com/exercises';
 const options = {
 	method: 'GET',
 	headers: {
-		'X-RapidAPI-Key': '6022607d15mshf08dcad0df9b6d8p1c3e02jsn7103a17b7b7b',
+		'X-RapidAPI-Key': '',
 		'X-RapidAPI-Host': 'musclewiki.p.rapidapi.com'
 	}
 };
