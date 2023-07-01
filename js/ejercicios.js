@@ -1,5 +1,26 @@
+// Variables
+
+let paginaActual = 1;
+const elementosPagina = 20;
+let arrayEjercicios = [];
+const url = 'https://musclewiki.p.rapidapi.com/exercises';
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': '2d975c207emsh39645e8fb1e7455p1f5777jsn1eb0e41ec732',
+		'X-RapidAPI-Host': 'musclewiki.p.rapidapi.com'
+	}
+};
+
+let listaEjercicios = document.getElementById("listaEjercicios");
+let listaBotones = document.getElementById("listaBotones")
+let btnContainer = document.getElementById("btn-container");
+let modalContainer = document.getElementById("modalContainer");
+
+// Funciones
+
 function crearCard (nombre, url, dificultad, musculos, idModal, pasos ) { // Esta funcion genera las cards de los ejercicios traidos por la API
-  let pasosHTML = pasos.map(paso => `<li class = "list-group-item">${paso}</li>`).join('');
+  let pasosHTML = pasos.map(paso => `<li class = "list-group-item">${paso}</li>`).join(''); // Cargamos los pasos para realizar cada ejercicio y los inyectamos en un modal de bootstrap
   let nuevaCard = document.createElement("div");
   nuevaCard.className = "col-auto";
   nuevaCard.innerHTML = `<div class="card" style="max-width: 24rem;">
@@ -37,51 +58,78 @@ function crearCard (nombre, url, dificultad, musculos, idModal, pasos ) { // Est
   modalContainer.appendChild(nuevoModal);
 }
 
-let listaEjercicios = document.getElementById("listaEjercicios");
-let btnContainer = document.getElementById("btn-container");
-let modalContainer = document.getElementById("modalContainer");
-
-btnContainer.addEventListener("click", (evento) => {
-  if (evento.target.nodeName !== "BUTTON") { //Si no hago click en un boton
-    console.log("No presionó el boton");
-    return;
-  } else {
-    listaEjercicios.innerHTML = "";
-    let categoria = evento.target.dataset.value;
-    let newURL = url + "?category=" + categoria;
-    console.log(newURL);
-    if (evento.target.dataset.value === "all") {
-      newURL = "https://musclewiki.p.rapidapi.com/exercises";
-      fetch (newURL, options)
-        .then(response => response.json())
-        .then(data => renderizar(data))
-    } else {
-      fetch (newURL, options)
-        .then(response => response.json())
-        .then(data => renderizar(data))
-    };
+function crearBotones (totalItems, elementosPagina) {
+  let numeroPaginas = Math.ceil (totalItems / elementosPagina);
+  for (i = 1; i <= numeroPaginas; i++) {
+    let nuevaPagina = document.createElement("div");
+    nuevaPagina.className = "col-auto";
+    nuevaPagina.innerHTML = `<button type="button" id="" data-value="${i}" class="btn btn-primary botonPag">${i}</button>`;
+    nuevaPagina.addEventListener("click", (event) => {
+      paginaActual = event.target.dataset.value;
+      listaEjercicios.innerHTML = "";
+      renderizar(arrayEjercicios, paginaActual, elementosPagina);
+    });
+    listaBotones.appendChild(nuevaPagina);
   }
-});
+}
 
-const url = 'https://musclewiki.p.rapidapi.com/exercises';
-const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': '',
-		'X-RapidAPI-Host': 'musclewiki.p.rapidapi.com'
-	}
-};
-
-function renderizar(arrayEjercicios) {
-  arrayEjercicios = arrayEjercicios.slice(0,30);
-  arrayEjercicios.forEach(ejercicio => {
+function renderizar(arrayEjercicios, paginaActual, elementosPagina) {
+  let inicio = (paginaActual - 1) * elementosPagina;
+  let final = paginaActual * elementosPagina;
+  let arrayCortado = arrayEjercicios.slice(inicio, final); 
+  arrayCortado.forEach(ejercicio => {
     console.log(ejercicio);
     console.log(ejercicio.exercise_name);
     crearCard (ejercicio.exercise_name, ejercicio.videoURL[0], ejercicio.Difficulty, ejercicio.target.Primary[0], ejercicio.id, ejercicio.steps);   
   });
 }
 
-fetch (url, options)
-  .then(response => response.json())
-  .then(data => renderizar(data))
+function fetchData(url, options) {
+  fetch(url, options)
+  .then(response => {
+    if (!response.ok) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un problema con el servidor, status: ${response.status}',
+      }) 
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    arrayEjercicios = data;
+    renderizar(arrayEjercicios, paginaActual, elementosPagina);
+    crearBotones(arrayEjercicios.length, elementosPagina);
+  })
+  .catch(error => { // Si hay un problema con el fetch
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: `Hubo un problema con la operación Fetch: ${error.message}`,
+    })
+  });
+}
 
+// Eventos
+
+btnContainer.addEventListener("click", (evento) => {
+  if (evento.target.nodeName !== "BUTTON") { 
+    console.log("No presionó el boton");
+  } else {
+    listaEjercicios.innerHTML = ""; // Limpiamos la lista de ejercicios cuando cambiamos de categoria
+    listaBotones.innerHTML = "";
+    let categoria = evento.target.dataset.value;
+    let newURL = url + "?category=" + categoria;
+    console.log(newURL);
+    if (evento.target.dataset.value === "all") {
+      fetchData (url, options);
+    } else {
+      fetchData (newURL, options);
+    };
+  }
+});
+
+// Init
+
+fetchData(url, options);
